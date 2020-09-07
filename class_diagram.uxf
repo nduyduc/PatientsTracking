@@ -1,0 +1,1154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>5</zoom_level>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1035</x>
+      <y>55</y>
+      <w>180</w>
+      <h>360</h>
+    </coordinates>
+    <panel_attributes>Patterns
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>750</x>
+      <y>300</y>
+      <w>120</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>Practitioner
+--
+-Id: string
+-Name: string
+-Gender: Gender
+-BirthDate: DateTime
+-Address: Address
+-observers: List&lt;IObserver&gt;
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>550</x>
+      <y>330</y>
+      <w>145</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Patient
+--
+-Id: string
+-Name: string
+-Gender: Gender
+-BirthDate: DateTime
+-Address: Address
+-Observations: List&lt;Observation&gt;
+--
++ContainsObservation(): bool
++GetObservation(): Observation
+*+GetAllObservations(): List&lt;Observation&gt;*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>570</x>
+      <y>145</y>
+      <w>120</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>Observation
+--
+-Id: string
+-Issued: DateTime
+-Code: string
+-CodeText: string
+-MeasurementResult: Measurement
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>570</x>
+      <y>85</y>
+      <w>125</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Measurement
+--
+-Value: double
+-Unit: string
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>620</x>
+      <y>440</y>
+      <w>70</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>Gender
+&lt;&lt;enumeration&gt;&gt;
+--
+male
+female
+other
+unknown</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>750</x>
+      <y>435</y>
+      <w>120</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>Address
+--
+-Line: List&lt;string&gt;
+-City: string
+-District: string
+-State: string
+-PostalCode: string
+-Country: string
+--
++toString(): string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>750</x>
+      <y>160</y>
+      <w>120</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>PatientsList
+--
+-patients: List&lt;Patient&gt;
+-practitioner: Practitioner
+--
++AddPatient(Patient p)
++Contains(Patient p): bool
++GetPatientAt(int index): Patient
++GetPatientByID(string Id): Patient
++RemovePatientByID(string Id)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>520</x>
+      <y>55</y>
+      <w>390</w>
+      <h>460</h>
+    </coordinates>
+    <panel_attributes>Models
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1065</x>
+      <y>80</y>
+      <w>120</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>/Iterator : IEnumerator/
+&lt;&lt;abstract&gt;&gt;
+--
+
+--
++current(): object
++key(): int
++moveNext(): bool
++reset()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1065</x>
+      <y>160</y>
+      <w>120</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>/IteratorAggregate/
+&lt;&lt;abstract&gt;&gt;
+--
+
+--
++GetEnumerator(): IEnumerator</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>750</x>
+      <y>85</y>
+      <w>120</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>PatientsListIterator
+--
+-patients: PatientsList
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>865</x>
+      <y>100</y>
+      <w>210</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>400.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>865</x>
+      <y>175</y>
+      <w>210</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>400.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>815</x>
+      <y>110</y>
+      <w>15</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>785</x>
+      <y>110</y>
+      <w>15</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1065</x>
+      <y>220</y>
+      <w>120</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>/IObserver/
+&lt;&lt;interface&gt;&gt;
+--
+
+--
++Update(IObservableSubject)
++UpdateAsync(IObservableSubject)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>815</x>
+      <y>230</y>
+      <w>260</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>500.0;40.0;10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1065</x>
+      <y>325</y>
+      <w>120</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>/IObservableSubject/
+&lt;&lt;interface&gt;&gt;
+--
+
+--
++Attach(IObserver observer)
++Detach(IObserver observer)
++Notify()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>865</x>
+      <y>350</y>
+      <w>210</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>400.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1115</x>
+      <y>270</y>
+      <w>60</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+is observed by
+m1=0..*
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>690</x>
+      <y>220</y>
+      <w>70</w>
+      <h>165</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+m2=0..*
+has
+</panel_attributes>
+    <additional_attributes>120.0;10.0;50.0;10.0;50.0;300.0;10.0;300.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>785</x>
+      <y>230</y>
+      <w>25</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=0..*
+</panel_attributes>
+    <additional_attributes>10.0;140.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>800</x>
+      <y>370</y>
+      <w>20</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>645</x>
+      <y>415</y>
+      <w>20</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>590</x>
+      <y>415</y>
+      <w>170</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0;320.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>685</x>
+      <y>340</y>
+      <w>75</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>130.0;10.0;90.0;10.0;90.0;250.0;10.0;250.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>625</x>
+      <y>120</y>
+      <w>20</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>235</x>
+      <y>55</y>
+      <w>270</w>
+      <h>355</h>
+    </coordinates>
+    <panel_attributes>Mappings
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>255</x>
+      <y>225</y>
+      <w>105</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>/MapperBase&lt;TFirst, TSecond&gt;/
+&lt;&lt;abstract&gt;&gt;
+--
+
+--
++Map(TSecond element): TFirst
++Map(TFirst element): TSecond</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>355</x>
+      <y>125</y>
+      <w>60</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;250.0;60.0;250.0;60.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>405</x>
+      <y>355</y>
+      <w>80</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>AddressMapper
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>405</x>
+      <y>115</y>
+      <w>80</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>ObservationMapper
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>405</x>
+      <y>315</y>
+      <w>80</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>PatientMapper
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>405</x>
+      <y>220</y>
+      <w>80</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>PractitionerMapper
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>130</y>
+      <w>100</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>180.0;110.0;110.0;110.0;110.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>385</y>
+      <w>320</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>620.0;240.0;10.0;240.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>330</y>
+      <w>80</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>140.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>245</y>
+      <w>300</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>580.0;110.0;580.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>355</x>
+      <y>235</y>
+      <w>60</w>
+      <h>25</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;30.0;60.0;30.0;60.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>355</x>
+      <y>245</y>
+      <w>60</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0;60.0;180.0;100.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>355</x>
+      <y>245</y>
+      <w>60</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0;60.0;260.0;100.0;260.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>915</x>
+      <y>110</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Note
+
+Iterator Pattern is used to 
+traverse a collection of Patients
+without knowing how the 
+collection is structured
+bg=yellow
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>235</x>
+      <y>425</y>
+      <w>190</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Services
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>245</x>
+      <y>450</y>
+      <w>175</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>FhirService
+&lt;&lt;static&gt;&gt;
+--
+-SERVICE_ROOT_URL: string
+-SERVICE_TIMEOUT: int
+-LIMIT_ENTRY: int
+-NUMBER_OF_DATA_RECORD: int
+-Client: FhirClient
+--
++GetPractitioner(pracId): Practitioner
++GetPatientsOfPractitioner(pracId): List&lt;Patient&gt;
+*+GetObservationValues(PatientsList): PatientsList*
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>275</y>
+      <w>35</w>
+      <h>185</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt; uses</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;350.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>415</x>
+      <y>510</y>
+      <w>340</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt; uses</panel_attributes>
+    <additional_attributes>620.0;10.0;620.0;80.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>520</x>
+      <y>565</y>
+      <w>400</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>Controllers
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>535</x>
+      <y>725</y>
+      <w>140</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>/Microsoft.AspNetCore.Mvc.Controller/
+&lt;&lt;abstract&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>735</x>
+      <y>590</y>
+      <w>165</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>PatientListController
+--
+
+--
++Index(): IActionResult
++GetPatientList(): ActionResult
++Monitor(): ActionResult
+*+HistoricalMonitor(): ActionResult*
++UpdateMonitor(): ActionResult
+*+ResetView(): ActionResult*
++ShowDetail(patientId): ActionResult
++RemoveMonitorPatient(patientId): ActionResult
++SetUpdateInterval(newInterval): ActionResult
++GetUpdateInterval(): JsonResult
+*+SetThreshold(systolic, diastolic): ActionResult*
+*+GetThreshold(): JsonResult*
+*+UpdateGraphData(ViewName): JsonResult*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>735</x>
+      <y>805</y>
+      <w>165</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>HomeController
+--
+
+--
++Index(): IActionResult
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>735</x>
+      <y>735</y>
+      <w>165</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>PractitionerController
+--
+
+--
++Login(): IActionResult
++LoginAsync(): ActionResult
++Index(): IActionResult</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>630</y>
+      <w>75</w>
+      <h>115</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;210.0;60.0;210.0;60.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>730</y>
+      <w>75</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0;60.0;60.0;130.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>730</y>
+      <w>75</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0;60.0;180.0;130.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>895</x>
+      <y>460</y>
+      <w>90</w>
+      <h>185</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>30.0;10.0;160.0;10.0;160.0;350.0;10.0;350.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>550</y>
+      <w>415</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt; uses</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0;810.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>550</y>
+      <w>415</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt; uses</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;460.0;810.0;460.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>895</x>
+      <y>460</y>
+      <w>90</w>
+      <h>300</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>30.0;10.0;160.0;10.0;160.0;580.0;10.0;580.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1035</x>
+      <y>435</y>
+      <w>180</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>AppContext
+&lt;&lt;static&gt;&gt;
+--
++Patients: PatientsList
++MonitoredPatients: PatientsList
++AnalysisData: PatientsList
++MlContext: MLContext
++Practitioner: Practitioner
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>865</x>
+      <y>325</y>
+      <w>180</w>
+      <h>165</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+has</panel_attributes>
+    <additional_attributes>10.0;10.0;310.0;10.0;310.0;310.0;340.0;310.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>865</x>
+      <y>200</y>
+      <w>180</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+has
+</panel_attributes>
+    <additional_attributes>10.0;10.0;310.0;10.0;310.0;560.0;340.0;560.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>825</x>
+      <y>510</y>
+      <w>310</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt; update</panel_attributes>
+    <additional_attributes>600.0;10.0;600.0;60.0;10.0;60.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1030</x>
+      <y>565</y>
+      <w>185</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>Views
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>915</x>
+      <y>780</y>
+      <w>125</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+execute event</panel_attributes>
+    <additional_attributes>10.0;20.0;230.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>905</x>
+      <y>485</y>
+      <w>135</w>
+      <h>145</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=0..*
+
+
+
+
+
+&lt; represent</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0;80.0;260.0;250.0;260.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1055</x>
+      <y>690</y>
+      <w>95</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>PractitionerViews
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1055</x>
+      <y>635</y>
+      <w>95</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>*PatientListViews*
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1055</x>
+      <y>745</y>
+      <w>95</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>HomeViews
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1105</x>
+      <y>580</y>
+      <w>100</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Note
+Each view package contains
+cshtml files represent 
+view to corresponding 
+controller
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>915</x>
+      <y>760</y>
+      <w>125</w>
+      <h>25</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+m2=1..*
+update &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;230.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>405</x>
+      <y>165</y>
+      <w>80</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Component
+bg=red
+ObservationMapper
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>355</x>
+      <y>175</y>
+      <w>60</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;150.0;60.0;150.0;60.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>180</y>
+      <w>100</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>180.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>205</y>
+      <w>25</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+m2=0..*
+has
+</panel_attributes>
+    <additional_attributes>10.0;250.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>255</y>
+      <w>110</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>Tracker
+bg=red
+--
+-Observations: List&lt;Observation&gt;
+-Patient: Patient
+-Type: string
+-GraphData: List&lt;double&gt;
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>625</x>
+      <y>205</y>
+      <w>40</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+m2=0..*
+contains
+</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>590</x>
+      <y>305</y>
+      <w>45</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+belongs to</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>255</x>
+      <y>85</y>
+      <w>105</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Note
+
+These Mapper classes 
+support mapping FHIR models
+to application's models.
+Implement Abstract Factory
+pattern
+bg=yellow
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>915</x>
+      <y>255</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Note
+
+Observer Pattern is used to 
+allow Practitioner to notify
+PatientList objects when it's 
+changed by user
+bg=yellow
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>240</x>
+      <y>680</y>
+      <w>75</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>Note
+
+New classes are in red
+Extended methods are 
+in bold text
+bg=yellow
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

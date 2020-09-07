@@ -1,0 +1,27 @@
+﻿@model FIT3077_Pre1975.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+  @*<summary>
+          Practitioner Login view
+    </summary>*@
+<div>
+    <h4>Practitioner</h4>
+    <hr />
+
+    @*Input form for practitioner ID*@
+    @using (Html.BeginForm("Login", "Practitioner", FormMethod.Post))
+    {
+        <h4>Enter practitioner ID to log in</h4>
+        @Html.TextBoxFor(m => m.Id)
+        <hr />
+        <button type="submit" class="btn btn-primary">Login</button>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        Html.RenderPartial("_LoginError", TempData["ErrorMessage"]);
+    }
+
+</div>

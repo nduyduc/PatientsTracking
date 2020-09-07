@@ -1,0 +1,28 @@
+﻿@model FIT3077_Pre1975.Models.MLResultViewModel
+
+@{
+    ViewData["Title"] = "Result";
+}
+
+<h4>Result</h4>
+<hr/>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.accuracy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.accuracy)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.f1score)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.f1score)
+        </dd>
+    </dl>
+</div>

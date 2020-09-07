@@ -1,0 +1,133 @@
+﻿@model FIT3077_Pre1975.Models.PatientsList
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.js" type="text/javascript"></script>
+
+  @*<summary>
+        Function to highlight row with checked checkbox
+    </summary>*@
+<script>
+    $(document).ready(function () {
+        $("#mytable input[type=checkbox]:checked").each(function () {
+            $(this).parent().parent().addClass("highlight");
+        });
+    });
+</script>
+
+  @*<summary>
+        Function to implement select all checkbox and each checkbox highlighting
+    </summary>*@
+<script>
+    $(document).ready(function () {
+        $("#mytable th > input").click(function () {
+            /// select all
+            if ($(this).is(":checked")) {
+                $(this).closest('table')
+                    .find('td > :checkbox')
+                    .attr('checked', $(this).is(':checked'))
+                    .prop('checked', $(this).is(':checked'))
+                    .parent().parent().addClass("highlight");
+            }
+            /// deselect all
+            else {
+                $(this).closest('table')
+                    .find('td > :checkbox')
+                    .attr('checked', $(this).is(':checked'))
+                    .prop('checked', $(this).is(':checked'))
+                    .parent().parent().removeClass("highlight");
+            }
+            $(this).parent().parent().removeClass("highlight");
+        });
+
+        /// individual selection
+        $("#mytable td > input").click(function () {
+            if ($(this).is(":checked")) {
+                $(this).parent().parent().addClass("highlight");
+            } else {
+                $(this).parent().parent().removeClass("highlight");
+            }
+        });
+
+    });
+</script>
+
+  @*<summary>
+        Button onclick function sends an ajax POST call to UpdateMonitor task in PatientList controller
+        with checked List IDs
+    </summary>*@
+<script>
+    $(function () {
+        $("#btnUpdate").click(function () {
+
+            /// get all checked patients' IDs
+            var IdList = [];
+            $("#mytable input[type=checkbox]:checked").each(function () {
+                var row = $(this).closest("tr")[0];
+                IdList.push(row.cells[2].innerHTML);
+            });
+
+            /// send an ajax request with selected IDs
+            $.ajax({
+                url: '@Url.Action("UpdateMonitor", "PatientList")',
+                data: { ListId: IdList },
+                dataType: "json",
+                type: 'POST',
+                traditional: true
+            });
+
+            $(".alert").show();
+
+            return false;
+        });
+    });
+</script>
+
+@*Update monitor list alert*@
+<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Success!</strong> Monitor List is updated.
+</div>
+
+@*Table of all patients*@
+<table class="table" id="mytable">
+    <thead>
+        <tr>
+            <th scope="col"><input type="checkbox" id="checkall"></th>
+            <th scope="col">#</th>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Count > 0)
+        {
+            int count = 1;
+            foreach (Patient patient in Model)
+            {
+                /// get information about each patient to generate table
+                <tr>
+                    <td><input type="checkbox" id="patient" +"@count" checked=@patient.Selected></td>
+                    <td>@count</td>
+                    <td>@patient.Id</td>
+                    <td>@patient.Name</td>
+                </tr>
+                count++;
+            }
+        }
+    </tbody>
+</table>
+
+@*Update monitor list button*@
+<div><button type="button" id="btnUpdate" class="btn btn-primary">Update Monitored Patients</button></div>
+
+@*Styling of highlighed rows*@
+<style>
+    .highlight {
+        color: #fff;
+        background-color: #1b6ec2;
+        border-color: #1861ac;
+    }
+
+    .alert {
+        display: none;
+    }
+</style>

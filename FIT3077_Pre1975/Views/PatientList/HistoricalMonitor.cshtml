@@ -1,0 +1,164 @@
+﻿@model IEnumerable<FIT3077_Pre1975.Models.Tracker>
+
+@{
+    ViewData["Title"] = "Historical Monitor";
+}
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+<script src="~/js/update.js" type="text/javascript"></script>
+
+<head>
+    <style>
+        .chart-container {
+            width: 45%;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .container #graphContainer {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<div>
+    <div>
+        <div class="row">
+            <div class="col-sm">
+                <h4 id="view-name">Historical Monitor</h4>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#graphModal">Show Graph</button>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="list-group">
+        @foreach (var item in Model)
+        {
+            <a class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@item.Patient.Name</h5>
+                </div>
+                <p class="mb-1">
+                    @item.ToString()
+                </p>
+            </a>
+        }
+    </div>
+    <hr />
+    <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Monitor", "PatientList")'">Back</button>
+
+    <div class="modal fade" id="graphModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Historical Systolic Blood Pressure Graph</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="container" id="graphContainer">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span id="graphTimer"></span>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        /*
+        Add Line Graphs representing historical blood pressure value of monitored patients to the Modal pop-up
+        */
+        $(document).ready(function () {
+            $(document).on('shown.bs.modal', '#graphModal', function () {
+                charts = [];
+                var models = @Json.Serialize(Model);
+                $('#graphContainer').empty();
+                var container = document.querySelector('#graphContainer');
+
+                models.forEach(function (tracker) {
+                    var div = document.createElement('div');
+                    div.classList.add('chart-container');
+
+                    var canvas = document.createElement('canvas');
+                    div.appendChild(canvas);
+                    container.appendChild(div);
+
+                    var labels = [];
+
+                    for (var i = 1; i <= tracker.observations.length; i++) {
+                        labels.push(i);
+                    }
+                    var ctx = canvas.getContext('2d');
+                    // create a line graph from patient name and data
+                    var config = createGraph(tracker.patient.name, labels, tracker.graphData);
+                    chart = new Chart(ctx, config);
+                    charts.push(chart);
+                });
+            });
+        });
+    </script>
+    <script>
+        window.chartColors = {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(231,233,237)'
+        };
+        // create a line graph with title, x-axis labels and data
+        // using Chartjs
+        function createGraph(name, labels, data) {
+            return {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        backgroundColor: window.chartColors.red,
+                        borderColor: window.chartColors.red,
+                        data: data,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: name
+                    },
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display: false
+                            }
+                        }],
+                        yAxes: [{
+                            gridLines: {
+                                display: true
+                            },
+                            ticks: {
+                                min: 80,
+                                max: 180,
+                                stepSize: 10
+                            }
+                        }]
+                    }
+                }
+            };
+        }
+    </script>
+
+    @*Countdown timer div*@
+    <p style="position:relative; top:20px" id="countdownTimer"></p>
+</div>

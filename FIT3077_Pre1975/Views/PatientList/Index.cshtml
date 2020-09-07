@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Patient List";
+}
+
+@*<summary>
+        Partial view when loading patients incomplete
+  </summary>*@
+<div>
+    <h4>Patients List</h4>
+    <hr />
+    <div class="partialContents" data-url="/PatientList/GetPatientList">
+        <button class="btn btn-primary" type="button" style="width: 100%" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Loading...
+        </button>
+    </div>
+</div>

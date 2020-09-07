@@ -1,0 +1,443 @@
+﻿@model FIT3077_Pre1975.Models.PatientsList
+@{
+    ViewData["Title"] = "Monitor List";
+}
+
+@*<summary>
+              Monitored patients list view
+    </summary>*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.js" type="text/javascript"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.2.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+@*<summary>
+          Function to show modal popup with patient details at (.anchorDetail) elements
+    </summary>*@
+<script>
+    var PatientDetailPostBackURL = 'ShowDetail';
+
+    $(function () {
+        $(".anchorDetail").click(function () {
+
+            var $buttonClicked = $(this);
+            var id = $buttonClicked.attr('data-id');
+            var options = { "backdrop": "static", keyboard: true };
+
+            /// ajax GET call to get patient details with patient's ID
+            $.ajax({
+                type: "GET",
+                url: PatientDetailPostBackURL,
+                contentType: "application/json; charset=utf-8",
+                data: { "Id": id },
+                datatype: "json",
+                success: function (data) {
+
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal(options);
+                    $('#myModal').modal('show');
+
+                },
+                error: function () {
+                    alert("Dynamic content load failed.");
+                }
+            });
+        });
+
+        /// close button
+        $("#closbtn").click(function () {
+            $('#myModal').modal('hide');
+        });
+    });
+
+</script>
+
+
+@*<summary>
+          Function to compute average cholesterol and highlight rows
+          of patients with above average cholesterol values.
+    </summary>*@
+<script>
+    $(document).ready(function () {
+        var total = 0;
+        var rowCount = 0;
+
+        /// get all patients' cholesterol values
+        $('td').each(function () {
+            if ($(this).hasClass('patientvalue')) {
+                var row = $(this).closest("tr")[0];
+                total += parseFloat(row.cells[2].innerHTML.split()[0]);
+                rowCount++;
+            }
+        });
+        var average = total / rowCount;
+
+        /// check if each cholesterol value is above average to add highlight class to corresponding row
+        $("td").each(function () {
+            if ($(this).hasClass('patientvalue')) {
+                var row = $(this).closest("tr")[0];
+                if (parseFloat(row.cells[2].innerHTML.split()[0]) > average) {
+                    row.cells[2].classList.add("highlight");
+                }
+            }
+        });
+    });
+</script>
+
+@*Main table div*@
+<div id="monitor-table">
+    <div>
+        <div class="row">
+            <div class="col-sm">
+                <h4 id="view-name">Monitored Patients</h4>
+            </div>
+            <div class="col-sm">
+                @*Button to show monitor list in a graph*@
+                <button onclick="location.href='@Url.ActionLink("HistoricalMonitor", "PatientList")'" type="button" class="btn btn-primary float-right">
+                    Historical Monitor
+                </button>
+                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#graphModal" style="margin-right:10px">Show Graph</button>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div>
+        <div class="row" id="grpChkBox">
+            <div class="col-6">
+                <p class="font-weight-bold">Select Checkbox to toggle corresponding Observations</p>
+            </div>
+            <div class="col-3">
+                <input type="checkbox" name="totalChol" /> Total cholesterol
+            </div>
+            <div class="col-3">
+                <input type="checkbox" name="bloodPressure" /> Blood pressure
+            </div>
+        </div>
+    </div>
+    <table class="table" id="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th class="totalChol" scope="col">Total Cholesterol</th>
+                <th class="totalChol" scope="col">Time</th>
+                <th class="bloodPressure" scope="col">Systolic Blood Pressure</th>
+                <th class="bloodPressure" scope="col">Diastolic Blood Pressure</th>
+                <th class="bloodPressure" scope="col">Time</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @*get all patients' data from Model and generate view*@
+            @if (Model != null && Model.Count > 0)
+            {
+                int count = 1;
+                foreach (Patient patient in Model)
+                {
+                    <tr id=@patient.Id>
+                        <td>@patient.Id</td>
+                        <td>@patient.Name</td>
+                        @if (!patient.ContainsObservation("Total Cholesterol"))
+                        {
+                            <td class="totalChol">No Data</td>
+                            <td class="totalChol">No Data</td>
+                        }
+                        else
+                        {
+                            Observation cholesterol = patient.GetObservationByCodeText("Total Cholesterol");
+                            <td class="patientvalue totalChol">@cholesterol.MeasurementResult.ToString()</td>
+                            <td class="totalChol">@cholesterol.Issued</td>
+                        }
+                        @if (!patient.ContainsObservation("Diastolic Blood Pressure"))
+                        {
+                            <td class="bloodPressure">No Data</td>
+                            <td class="bloodPressure">No Data</td>
+                            <td class="bloodPressure">No Data</td>
+                        }
+                        else
+                        {
+                            Observation diastolic = patient.GetObservationByCodeText("Diastolic Blood Pressure");
+                            Observation systolic = patient.GetObservationByCodeText("Systolic Blood Pressure");
+                            <td class="bloodPressure systolicValue">@systolic.MeasurementResult.ToString()</td>
+                            <td class="bloodPressure diastolicValue">@diastolic.MeasurementResult.ToString()</td>
+                            <td class="bloodPressure">@systolic.Issued</td>
+                        }
+                        @*patient detail button*@
+                        <td>
+                            <button href="javascript:void(0);" class="anchorDetail btn btn-link" data-id="@patient.Id">Details</button>
+                        </td>
+
+                        @*remove patient button*@
+                        <td>
+                            <button type="button" class="delete btn btn-danger" data-id="@patient.Id">Remove</button>
+                        </td>
+                    </tr>
+
+                    count++;
+                }
+            }
+        </tbody>
+
+    </table>
+
+    @*Modal popup to show patient extra details*@
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+
+    @*Modal popup to show graph*@
+    <div class="modal fade" id="graphModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Total cholesterol in mg/dL</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <canvas id="chBar" style="width: 512px; height: 256px"></canvas>
+                </div>
+                <div class="modal-footer">
+                    <span id="graphTimer"></span>
+                    <button type="button" id="closeButton" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Chart render with Chart.js*@
+    <script>
+        $('#graphModal').on('shown.bs.modal', function (event) {
+            var graphLabel = [];
+            var graphData = [];
+            $('td').each(function () {
+                if ($(this).hasClass('patientvalue')) {
+                    var row = $(this).closest("tr")[0];
+                    graphLabel.push(row.cells[1].innerHTML);
+                    graphData.push(parseFloat(row.cells[2].innerHTML.split()[0]));
+                }
+            });
+            var chBar = document.getElementById("chBar");
+            var chartData = {
+                labels: graphLabel,
+                datasets: [{
+                    data: graphData,
+                    backgroundColor: '#007bff'
+                }]
+            };
+            if (graphData.length === 0) {
+                chartData.datasets = [];
+            }
+            if (chBar) {
+                chart = new Chart(chBar, {
+                    type: 'bar',
+                    data: chartData,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }],
+                            xAxes: [{
+                                barPercentage: 0.3,
+                                maxBarThickness: 45
+                            }],
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            }
+            Chart.plugins.register({
+                afterDraw: function (chart) {
+                    if (chartData.datasets.length === 0) {
+                        // No data is present
+                        var ctx = chart.chart.ctx;
+                        var width = chart.chart.width;
+                        var height = chart.chart.height
+                        chart.clear();
+                        ctx.save();
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.font = "16px 'Helvetica Nueue'";
+                        ctx.fillText('No data to display', width / 2, height / 2);
+                        ctx.restore();
+                    }
+                }
+            });
+        });
+    </script>
+
+    @*Form to set update interval*@
+    <form class="form-row">
+        <div class="form-group col-md-4">
+            <input type="text" class="form-control" id="interval" placeholder="Update interval">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="button" id="reset">Submit</button>
+        </div>
+    </form>
+    <small style="position:relative; top:-15px; left:12px" id="help" class="form-text text-muted">Set update interval (seconds).</small>
+
+    @*Form to update BP thresholds*@
+    <form class="form-row">
+        <div class="form-group col-md-2">
+            <input class="form-control" type="text" id="newSystolic" placeholder="Systolic threshold">
+        </div>
+        <div class="form-group col-md-2">
+            <input class="form-control" type="text" id="newDiastolic" placeholder="Diastolic threshold">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="button" id="resetThreshold">Submit</button>
+        </div>
+    </form>
+    <small style="position:relative; top:-15px; left:12px" id="help" class="form-text text-muted">Set blood pressure thresholds (mm[Hg]).</small>
+    <small style="position:relative; top:-15px; left:12px" id="currentThreshold" class="form-text text-muted"></small>
+</div>
+
+
+<style>
+    @*Red font for patients with above avergage cholesterol values*@
+    .highlight {
+        color: red;
+        border-color: #1861ac;
+        font-weight: bold;
+    }
+    @*Purple for BP values higher than threshold*@
+    .bloodPressureHighlight {
+        color: purple;
+        border-color: #1861ac;
+        font-weight: bold;
+    }
+</style>
+
+<script src="~/js/update.js" type="text/javascript"></script>
+
+@*Countdown timer div*@
+<p style="position:relative; top:20px" id="countdownTimer"></p>
+
+@*<summary>
+          Function to implement remove patient button and update view and appcontext data accordingly
+    </summary>*@
+<script>
+    $(".delete").on("click", function () {
+    if (confirm("Do you want to remove this patient ?")) {
+        var id = $(this).attr('data-id');
+        var tr = $(this).closest('tr');
+        tr.remove();
+
+        /// ajax request to remove patient from MonitorList in AppContext using Controller method
+        $.ajax({
+            url: '@Url.Action("RemoveMonitorPatient", "PatientList")',
+            data: { Id: id },
+            dataType: "json",
+            type: 'POST',
+            traditional: true,
+        });
+    }
+    });
+</script>
+
+@*<summary>
+             Function to implement dynamically toggled observations
+    </summary>*@
+<script>
+    $(function () {
+        var $chk = $("#grpChkBox input:checkbox"); // cache the selector
+        var $tbl = $("#table");
+
+        $chk.prop('checked', true); // check all checkboxes when page loads
+
+        $chk.click(function () {
+            var colToHide = $tbl.find("." + $(this).attr("name"));
+            $(colToHide).toggle();
+        });
+    });
+</script>
+
+@*<summary>
+             Function to highlight systolic and diastolic values according to x and y
+    </summary>*@
+<script>
+    $.ajax({
+        url: '@Url.Action("GetThreshold", "PatientList")',
+        dataType: "json",
+        data: {},
+        traditional: true,
+        success: function (result) {
+            callback(result);
+        }
+    });
+
+    /// Highlight BP values with data from AppContext
+    function callback(data) {
+        systolicValue = data[0];
+        diastolicValue = data[1];
+        var currentVal = document.getElementById("currentThreshold");
+        currentVal.innerHTML = "Current thresholds: Systolic: " + systolicValue + " mm[Hg], " + "Diastolic: " + diastolicValue + " mm[Hg]."
+        $("td").each(function () {
+            /// Checking all systolic values to highlight
+            if ($(this).hasClass('systolicValue')) {
+                var row = $(this).closest("tr")[0];
+                if (parseFloat(row.cells[4].innerHTML.split()[0]) > systolicValue) {
+                    row.cells[4].classList.add("bloodPressureHighlight");
+                }
+            }
+            /// Checking all diastolic values to highlight
+            if ($(this).hasClass('diastolicValue')) {
+                var row = $(this).closest("tr")[0];
+                if (parseFloat(row.cells[5].innerHTML.split()[0]) > diastolicValue) {
+                    row.cells[5].classList.add("bloodPressureHighlight");
+                }
+            }
+        });
+
+        /// Set AppContext data with input value
+        document.getElementById("resetThreshold").addEventListener("click", function (e) {
+            var newSystolicThreshold = parseInt(document.getElementById("newSystolic").value);
+            var newDiastolicThreshold = parseInt(document.getElementById("newDiastolic").value);
+
+            /// check for appropiate new input
+            if (isNaN(newSystolicThreshold) || !(Number.isInteger(newSystolicThreshold)) || (newSystolicThreshold < 0) || isNaN(newDiastolicThreshold) || !(Number.isInteger(newDiastolicThreshold)) || (newDiastolicThreshold < 0)) {
+                alert("Blood pressure thresholds should be positive integers.");
+            }
+
+            else {
+                /// update new thresholds to AppContext
+                $.ajax({
+                    url: '@Url.Action("SetThreshold", "PatientList")',
+                    data: { newSystolicThreshold: document.getElementById("newSystolic").value, newDiastolicThreshold: document.getElementById("newDiastolic").value },
+                    dataType: "json",
+                    type: 'POST',
+                    traditional: true,
+                });
+                var currentVal = document.getElementById("currentThreshold");
+                currentVal.innerHTML = "Current thresholds: Systolic: " + newSystolicThreshold + " mm[Hg], " + "Diastolic: " + newDiastolicThreshold + " mm[Hg]."
+                /// Recheck all sytolic and diastolic values to highlight
+                $("td").each(function () {
+                    if ($(this).hasClass('systolicValue')) {
+                        var row = $(this).closest("tr")[0];
+                        row.cells[4].classList.remove("bloodPressureHighlight");
+                        if (parseFloat(row.cells[4].innerHTML.split()[0]) > newSystolicThreshold) {
+                            row.cells[4].classList.add("bloodPressureHighlight");
+                        }
+                    }
+                    if ($(this).hasClass('diastolicValue')) {
+                        var row = $(this).closest("tr")[0];
+                        row.cells[5].classList.remove("bloodPressureHighlight");
+                        if (parseFloat(row.cells[5].innerHTML.split()[0]) > newDiastolicThreshold) {
+                            row.cells[5].classList.add("bloodPressureHighlight");
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>
